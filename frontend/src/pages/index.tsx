@@ -10,12 +10,26 @@ export default function Home() {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (file) {
+      if (file?.type !== 'application/pdf') {
+        console.log('invalid file')
+        throw new Error("invalid file")
+      }
       const fd = new FormData();
       fd.append('file', file);
-      console.log(fd);
+      const response = await fetch('http://localhost:3001/qr/upload', {
+          method: 'POST',
+          body: fd
+        }
+      );
 
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
     }
   };
 
