@@ -1,20 +1,85 @@
 import { formatCheck } from "./formate_validator_utils/formateCheck"
-import { ClassCheck } from "./interfaces/interfaces";
+import { ClassCheck, QrCodeInterface } from "./interfaces/interfaces";
+import { MongoClient } from "mongodb";
+import { BinaryDataOfQrCodes } from "./detectbarcodes";
+// Connection URL
+const uri = "mongodb://mongo:mongo@localhost:27017/?authSource=admin"; 
+// admin:secret are username/password if auth is enabled
 
+// Database and client
+const client = new MongoClient(uri);
 
-export const formatValidationAndCRUD = (QrCodes: any) => {
+export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadId: string) => {
+    await client.connect();
+
+    const db = client.db("qrcodevalidator"); // choose your DB
+    const QrCodeCollection = db.collection("QrCodes"); // choose your collection
+
     for (let i = 0;i < QrCodes.length;i++) {
         let formatResult = formatCheck(QrCodes[i]);
         const str: string = QrCodes[i];
-
+        const buffer = Buffer.from(BinaryDataOfQrCodes[i]);
+        
         if (formatResult === ClassCheck.VALID && !str.startsWith("No"))
-            console.log(`valid + ${QrCodes[i]}`)
+        {
+            const QrcodeObj: QrCodeInterface = JSON.parse(QrCodes[i]);
+            await QrCodeCollection.insertOne({
+                status: "VALID",
+                data: {
+                    batch: QrcodeObj.batch,
+                    category: QrcodeObj.category,
+                    location: QrcodeObj.location,
+                    serial: QrcodeObj.serial,
+                    tag_id: QrcodeObj.tag_id
+                },
+                qrImageBase64: buffer.toString('base64'),
+                uploadId: uploadId
+            });
+            console.log(`valid + ${QrcodeObj}`)
+        }
         else if (formatResult === ClassCheck.INVALID && !str.startsWith("No"))
-            console.log(`invalid + ${QrCodes[i]}`)
+        {
+            const QrcodeObj: QrCodeInterface = JSON.parse(QrCodes[i]);
+            await QrCodeCollection.insertOne({
+                status: "INVALID",
+                data: {
+                    batch: QrcodeObj.batch || null,
+                    category: QrcodeObj.category || null,
+                    location: QrcodeObj.location || null,
+                    serial: QrcodeObj.serial || null,
+                    tag_id: QrcodeObj.tag_id || null
+                },
+                qrImageBase64: buffer.toString('base64'),
+                uploadId: uploadId
+            });
+            console.log(`invalid + ${QrcodeObj}`)
+        }
         else if (formatResult === ClassCheck.UNREADABLE && !str.startsWith("No"))
+        {
+            await QrCodeCollection.insertOne({
+                status: "UNREADABLE",
+                qrImageBase64: buffer.toString('base64'),
+                uploadId: uploadId
+            });
             console.log(`unreadable + ${QrCodes[i]}`)
+        }
         else if (formatResult === ClassCheck.DUBLICATE && !str.startsWith("No"))
-            console.log(`duplicates + ${QrCodes[i]}`)
+        {
+            const QrcodeObj: QrCodeInterface = JSON.parse(QrCodes[i]);
+            await QrCodeCollection.insertOne({
+                status: "DUPLICATE",
+                data: {
+                    batch: QrcodeObj.batch || null,
+                    category: QrcodeObj.category || null,
+                    location: QrcodeObj.location || null,
+                    serial: QrcodeObj.serial || null,
+                    tag_id: QrcodeObj.tag_id || null
+                },
+                qrImageBase64: buffer.toString('base64'),
+                uploadId: uploadId
+            });
+            console.log(`duplicates + ${QrcodeObj}`)
+        }
     }
     
 }
