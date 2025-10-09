@@ -2,6 +2,8 @@ import { createCanvas, Image, loadImage } from 'canvas';
 import fs from "fs";
 import jsQR from "jsqr";
 
+export let BinaryDataOfQrCodes: number[][] = [];
+
 const imageIsBlank = (img: Image, x: number, row: number, y: number, col: number): boolean => {
     const canvas = createCanvas(img.width - 490, img.height - 740);
     const ctx = canvas.getContext('2d');
@@ -42,8 +44,10 @@ export const detectBarCodes = async (images: any) => {
                         QrCodes.push(`No QR code found pos ${row} + ${col} + section ${i}`);
                     else
                         QrCodes.push(`Invalid QrCode pos ${row} + ${col} + section ${i}`);
+                    BinaryDataOfQrCodes.push([0]);
                 }
                 else {
+                    BinaryDataOfQrCodes.push(code.binaryData);
                     QrCodes.push(code.data);
                 }
                 row += 2;
@@ -52,9 +56,6 @@ export const detectBarCodes = async (images: any) => {
         }
         i++;
     }
-    // for (let i = 0;i < QrCodes.length;i++)
-    //     console.log(QrCodes[i])
-    // console.log(QrCodes[0])
     return QrCodes;
 }
 
