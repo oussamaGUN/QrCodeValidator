@@ -1,5 +1,4 @@
 import { ClassCheck, QrCodeInterface } from "../interfaces/interfaces";
-let tag_id_Array: string[] = ["TAG-00022"]
 
 const formatKeysValCheck = (QrcodeObj: QrCodeInterface): boolean => {
     if (!QrcodeObj.batch || !QrcodeObj.category
@@ -21,7 +20,7 @@ const formatKeysValCheck = (QrcodeObj: QrCodeInterface): boolean => {
     }
     return true;
 }
-export  const formatCheck = (QrCode: any): ClassCheck => {
+export  const formatCheck = (QrCode: any, tag_id_Array: string[]): ClassCheck => {
     try {
         const QrcodeObj: QrCodeInterface = JSON.parse(QrCode);
         if (!formatKeysValCheck(QrcodeObj))

@@ -14,9 +14,10 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
 
     const db = client.db("qrcodevalidator"); // choose your DB
     const QrCodeCollection = db.collection("QrCodes"); // choose your collection
+    let tag_id_Array: string[] = []
 
     for (let i = 0;i < QrCodes.length;i++) {
-        let formatResult = formatCheck(QrCodes[i]);
+        let formatResult = formatCheck(QrCodes[i], tag_id_Array);
         const str: string = QrCodes[i];
         const buffer = Buffer.from(BinaryDataOfQrCodes[i]);
         
@@ -35,7 +36,7 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            console.log(`valid + ${QrcodeObj}`)
+            // console.log(`valid + ${QrcodeObj}`)
         }
         else if (formatResult === ClassCheck.INVALID && !str.startsWith("No"))
         {
@@ -52,7 +53,7 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            console.log(`invalid + ${QrcodeObj}`)
+            // console.log(`invalid + ${QrcodeObj}`)
         }
         else if (formatResult === ClassCheck.UNREADABLE && !str.startsWith("No"))
         {
@@ -61,7 +62,7 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            console.log(`unreadable + ${QrCodes[i]}`)
+            // console.log(`unreadable + ${QrCodes[i]}`)
         }
         else if (formatResult === ClassCheck.DUBLICATE && !str.startsWith("No"))
         {
@@ -78,8 +79,7 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            console.log(`duplicates + ${QrcodeObj}`)
+            // console.log(`duplicates + ${QrcodeObj}`)
         }
     }
-    
 }
