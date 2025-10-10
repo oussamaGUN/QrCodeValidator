@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 import { ClassCheck } from "src/QrCodeValidator/utils/interfaces/interfaces";
 
 // Connection URL
-const uri = "mongodb://mongo:mongo@localhost:27017/?authSource=admin"; 
+const uri = "mongodb://mongo:mongo@mongodb:27017/?authSource=admin"; 
 // admin:secret are username/password if auth is enabled
 
 // Database and client
@@ -17,7 +17,7 @@ export class DatabaseService {
         const db = client.db("qrcodevalidator"); // choose your DB
         const QrCodeCollection = db.collection("QrCodes"); // choose your collection
 
-        const results = await QrCodeCollection.find().toArray();
+        const results = await QrCodeCollection.find({ uploadId }).toArray();
 
         let validCount = 0;
         let invalidCount = 0;
