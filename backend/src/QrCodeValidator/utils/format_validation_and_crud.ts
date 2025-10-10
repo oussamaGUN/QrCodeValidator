@@ -3,8 +3,7 @@ import { ClassCheck, QrCodeInterface } from "./interfaces/interfaces";
 import { MongoClient } from "mongodb";
 import { BinaryDataOfQrCodes } from "./detectbarcodes";
 // Connection URL
-const uri = "mongodb://mongo:mongo@localhost:27017/?authSource=admin"; 
-// admin:secret are username/password if auth is enabled
+const uri = "mongodb://mongo:mongo@mongodb:27017/?authSource=admin"; 
 
 // Database and client
 const client = new MongoClient(uri);
@@ -36,7 +35,6 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            // console.log(`valid + ${QrcodeObj}`)
         }
         else if (formatResult === ClassCheck.INVALID && !str.startsWith("No"))
         {
@@ -53,7 +51,6 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            // console.log(`invalid + ${QrcodeObj}`)
         }
         else if (formatResult === ClassCheck.UNREADABLE && !str.startsWith("No"))
         {
@@ -62,7 +59,6 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            // console.log(`unreadable + ${QrCodes[i]}`)
         }
         else if (formatResult === ClassCheck.DUBLICATE && !str.startsWith("No"))
         {
@@ -79,7 +75,6 @@ export const formatValidationAndCRUD = async (QrCodes: any, images: any, uploadI
                 qrImageBase64: buffer.toString('base64'),
                 uploadId: uploadId
             });
-            // console.log(`duplicates + ${QrcodeObj}`)
         }
     }
 }
