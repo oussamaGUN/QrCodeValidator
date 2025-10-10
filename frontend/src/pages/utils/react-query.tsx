@@ -79,6 +79,7 @@ export const Results = ({
               transform: "translate(-50%, -50%)",
               width: "50%",
               height: "50vh",
+              borderRadius: "20px"
             }}
           >
             <Box
@@ -113,6 +114,7 @@ export const Results = ({
               <Box
                 sx={{
                   display: "flex",
+                  width: "100%",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
@@ -132,6 +134,7 @@ export const Results = ({
               <Box
                 sx={{
                   display: "flex",
+                  width: "100%",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
@@ -151,6 +154,7 @@ export const Results = ({
               <Box
                 sx={{
                   display: "flex",
+                  width: "100%",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
@@ -170,6 +174,7 @@ export const Results = ({
               <Box
                 sx={{
                   display: "flex",
+                  width: "100%",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
@@ -195,7 +200,16 @@ export const Results = ({
                 alignItems: "center"
               }}>
               {(valid === 1 && invalid  === 1 && unreadable === 1 && duplicates  === 1) && 
-                <Button variant="contained" color="success">
+                <Button variant="contained" color="success" onClick={() => {
+                  setDataNums(0)
+                  setValid(0)
+                  setInvalid(0)
+                  setDuplicates(0)
+                  setUnreadable(0)
+                }}
+                  sx={{
+                    width: "100px"
+                  }}>
                   DONE
                 </Button>
               }
