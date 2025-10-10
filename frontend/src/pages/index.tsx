@@ -3,42 +3,14 @@ import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-quer
 import { Box, Button, Typography } from "@mui/material";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { poppins } from "@/styles/fonts";
+import { Results } from "./utils/react-query";
+import Processing from "./components/processing";
 
 
 const queryClient = new QueryClient(); // Create a React Query client
 
 
-const Results = ({ uploadId, setStatOfProcessing }: { uploadId: string, setStatOfProcessing: React.Dispatch<React.SetStateAction<number>> }) => {
-  const fetchResults = async () => {
-    const res = await fetch(`http://localhost:3001/api/get-data/${uploadId}`);
-    if (!res.ok) throw new Error("Failed to fetch");
-    return res.json();
-  };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['uploadResults', uploadId],
-    queryFn: fetchResults,
-    refetchInterval: 2000,
-  });
-  
-  // console.log(data);
-  useEffect(() => {
-    if (data) {
-      setStatOfProcessing(2);
-    }
-  }, [data]);
-
-  if (isLoading) return <p>Loading...</p>;
-
-  return (
-    <main>
-      <p>{data.valid}</p>
-      <p>{data.invalid}</p>
-      <p>{data.unreadable}</p>
-      <p>{data.duplicates}</p>
-    </main>
-  )
-}
 
 export default function Home() {
   const [uploadId, setUploadId] = useState<string | null>(null)
@@ -93,7 +65,7 @@ export default function Home() {
               alignItems: "center",
               width: "100vw",
               height: "100vh",
-              bgcolor: "#fdf0d5",
+              bgcolor: "#edf2f4",
             }}
             className={poppins.className}
 
@@ -104,7 +76,7 @@ export default function Home() {
               sx={{
                 width: "15rem",
                 height: "10vh",
-                bgcolor: "#003049"
+                bgcolor: "#2b2d42"
               }}>
               <label 
                 htmlFor="file-upload" 
@@ -114,7 +86,7 @@ export default function Home() {
                   display: "flex", 
                   alignItems: "center", 
                   fontSize: "20px",
-                  color: "#ffffff",
+                  color: "#edf2f4",
                   }}>
                 <FileUploadIcon 
                   sx={{
@@ -133,20 +105,23 @@ export default function Home() {
           </Button>
           <Typography sx={{
             mt: "10px",
-            color: "#003049"
+            color: "#8d99ae"
           }}>{file?.name}</Typography>
           <Button 
             onClick={handleUpload} 
             variant="outlined" 
             sx={{
               mt: 2,
-              color: "#c1121f",
-              borderColor: "#c1121f"
-          }}>Scan</Button>
-          {uploadId && <Results uploadId={uploadId} setStatOfProcessing={setStatOfProcessing} />}
-          {statOfProcessing === 1 && <p>Processing</p>}
-          {statOfProcessing === 2 && <p>show data</p>}
-        </Box>
+              width: "100px",
+              height: "8vh",
+              color: "#ef233c",
+              borderColor: "#ef233c",
+              background: "none"
+          }}>
+            {statOfProcessing !== 1 && <p>Scan</p>}
+            {statOfProcessing === 1 && <Processing />}
+          </Button>
+          {uploadId && <Results uploadId={uploadId} setStatOfProcessing={setStatOfProcessing} />}        </Box>
       </main>
     </QueryClientProvider>
   );
