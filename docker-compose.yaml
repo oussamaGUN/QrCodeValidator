@@ -1,0 +1,41 @@
+services:
+  frontend:
+    container_name: frontend-container
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # prevent node_modules from being overwritten
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-network
+  backend:
+    container_name: backend-container
+    build: 
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # prevent node_modules from being overwritten
+  mongodb:
+    container_name: mongodb-container
+    image: mongo:7.0
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    networks:
+      - app-network
+    ports:
+      - "27017:27017"
+networks:
+  app-network:
+    driver: bridge
+    
