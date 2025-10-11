@@ -75,7 +75,7 @@ export default function Home() {
               component="label"
               sx={{
                 width: "15rem",
-                height: "10vh",
+                height: "4.5rem",
                 bgcolor: "#2b2d42"
               }}>
               <label 
@@ -112,8 +112,8 @@ export default function Home() {
             variant="outlined" 
             sx={{
               mt: 2,
-              width: "100px",
-              height: "8vh",
+              width: "15rem",
+              height: "3.5rem",
               color: "#ef233c",
               borderColor: "#ef233c",
               background: "none"
