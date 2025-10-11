@@ -123,7 +123,7 @@ export const Results = ({
                 <Typography sx={{fontFamily: "Poppins, sans-serif"}}>VALID</Typography>
                 <Typography
                   sx={{
-                    fontSize: "50px",
+                    fontSize: "3.5rem",
                     fontFamily: "Orbitron, sans-serif",
                     color: "#2b2d42",
                   }}
@@ -143,7 +143,7 @@ export const Results = ({
                 <Typography sx={{fontFamily: "Poppins, sans-serif"}}>INVALID</Typography>
                 <Typography
                   sx={{
-                    fontSize: "50px",
+                    fontSize: "3.5rem",
                     color: "#2b2d42",
                     fontFamily: "Orbitron, sans-serif"
                   }}
@@ -163,7 +163,7 @@ export const Results = ({
                 <Typography sx={{fontFamily: "Poppins, sans-serif"}}>UNREADABLE</Typography>
                 <Typography
                   sx={{
-                    fontSize: "50px",
+                    fontSize: "3.5rem",
                     color: "#2b2d42",
                     fontFamily: "Orbitron, sans-serif"
                   }}
@@ -183,7 +183,7 @@ export const Results = ({
                 <Typography sx={{fontFamily: "Poppins, sans-serif"}}>DUPLICATES</Typography>
                 <Typography
                   sx={{
-                    fontSize: "50px",
+                    fontSize: "3.5rem",
                     color: "#2b2d42",
                     fontFamily: "Orbitron, sans-serif"
                   }}
@@ -208,7 +208,7 @@ export const Results = ({
                   setUnreadable(0)
                 }}
                   sx={{
-                    width: "100px"
+                    width: "6rem"
                   }}>
                   DONE
                 </Button>
