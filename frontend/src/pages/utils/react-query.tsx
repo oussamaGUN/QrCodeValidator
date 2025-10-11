@@ -12,9 +12,11 @@ import CountUp from "react-countup";
 
 export const Results = ({
   uploadId,
-  setStatOfProcessing,}: {
+  setStatOfProcessing,
+  setClicAble}: {
   uploadId: string;
   setStatOfProcessing: React.Dispatch<React.SetStateAction<number>>;
+  setClicAble: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [dataNums, setDataNums] = useState(1);
   const [valid, setValid] = useState(0);
@@ -96,6 +98,7 @@ export const Results = ({
                   setInvalid(0)
                   setDuplicates(0)
                   setUnreadable(0)
+                  setClicAble(1)
                 }}
                 sx={{
                   cursor: "pointer",
@@ -206,6 +209,7 @@ export const Results = ({
                   setInvalid(0)
                   setDuplicates(0)
                   setUnreadable(0)
+                  setClicAble(1)
                 }}
                   sx={{
                     width: "6rem"

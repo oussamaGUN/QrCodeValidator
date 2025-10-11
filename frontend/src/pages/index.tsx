@@ -15,6 +15,7 @@ const queryClient = new QueryClient(); // Create a React Query client
 export default function Home() {
   const [uploadId, setUploadId] = useState<string | null>(null)
   const [statOfProcessing, setStatOfProcessing] = useState(0);
+  const [clickAble, setClickAble] = useState(1);
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,8 +27,9 @@ export default function Home() {
   };
 
   const handleUpload = async () => {
-    if (file) {
+    if (file && clickAble) {
       setStatOfProcessing(1);
+      setClickAble(0);
       if (file?.type !== 'application/pdf') {
         console.log('invalid file')
         throw new Error("invalid file")
@@ -121,7 +123,7 @@ export default function Home() {
             {statOfProcessing !== 1 && <p>Scan</p>}
             {statOfProcessing === 1 && <Processing />}
           </Button>
-          {uploadId && <Results uploadId={uploadId} setStatOfProcessing={setStatOfProcessing} />}        </Box>
+          {uploadId && <Results uploadId={uploadId} setStatOfProcessing={setStatOfProcessing} setClicAble={setClickAble} />}        </Box>
       </main>
     </QueryClientProvider>
   );
