@@ -16,6 +16,7 @@ export default function Home() {
   const [uploadId, setUploadId] = useState<string | null>(null)
   const [statOfProcessing, setStatOfProcessing] = useState(0);
   const [clickAble, setClickAble] = useState(1);
+  const [inValidFileType, setInValidFileType] = useState(0);
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,9 +31,14 @@ export default function Home() {
     if (file && clickAble) {
       setStatOfProcessing(1);
       setClickAble(0);
+      setInValidFileType(0);
       if (file?.type !== 'application/pdf') {
         console.log('invalid file')
-        throw new Error("invalid file")
+        setInValidFileType(1);
+        setStatOfProcessing(0);
+        setClickAble(1);
+        return ;
+        // throw new Error("invalid file")
       }
       const fd = new FormData();
       fd.append('file', file);
@@ -73,7 +79,6 @@ export default function Home() {
 
           >
           <Button
-              variant="contained"
               component="label"
               sx={{
                 width: "15rem",
@@ -103,12 +108,15 @@ export default function Home() {
                 style={{ display: "none", cursor: "pointer" }}
                 onChange={handleFileChange}
               />
-
           </Button>
           <Typography sx={{
             mt: "10px",
             color: "#8d99ae"
-          }}>{file?.name}</Typography>
+          }}>{file?.name}
+          </Typography>
+          {
+            inValidFileType === 1 && <Typography color="error">Invalid file type. Please upload a PDF.</Typography>
+          }
           <Button 
             onClick={handleUpload} 
             variant="outlined" 
@@ -116,14 +124,14 @@ export default function Home() {
               mt: 2,
               width: "15rem",
               height: "3.5rem",
-              color: "#ef233c",
-              borderColor: "#ef233c",
+              color: "#0aa09e",
+              borderColor: "#0aa09e",
               background: "none"
           }}>
             {statOfProcessing !== 1 && <p>Scan</p>}
             {statOfProcessing === 1 && <Processing />}
           </Button>
-          {uploadId && <Results uploadId={uploadId} setStatOfProcessing={setStatOfProcessing} setClicAble={setClickAble} />}        </Box>
+          {uploadId && <Results uploadId={uploadId} setStatOfProcessing={setStatOfProcessing} setClicAble={setClickAble} />}     </Box>
       </main>
     </QueryClientProvider>
   );
