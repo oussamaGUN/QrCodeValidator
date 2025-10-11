@@ -26,8 +26,8 @@ export default function Home() {
   };
 
   const handleUpload = async () => {
-    setStatOfProcessing(1);
     if (file) {
+      setStatOfProcessing(1);
       if (file?.type !== 'application/pdf') {
         console.log('invalid file')
         throw new Error("invalid file")
@@ -46,7 +46,7 @@ export default function Home() {
 
       const data = await response.json();
       setUploadId(data.uploadId);
-    }
+    }      
   };
 
   return (
@@ -85,7 +85,7 @@ export default function Home() {
                   cursor: "pointer",
                   display: "flex", 
                   alignItems: "center", 
-                  fontSize: "20px",
+                  fontSize: "1.3rem",
                   color: "#edf2f4",
                   }}>
                 <FileUploadIcon 
